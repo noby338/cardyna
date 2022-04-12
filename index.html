@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="noby">
+    <title>CarDyna</title>
+    <link rel="shortcut icon" href="CD.ico" />
+    <link rel="stylesheet" href="./fonts/iconfont.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/echarts.min.js"></script>
+    <script src="js/math.js"></script>
+    <script src="js/myscript.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+</head>
+
+<body>
+    <!-- 头部start -->
+    <header class="">
+        <h1>CarDyna</h1>
+        <input type="button" value="添加燃油车" id="add_f_btn">
+        <input type="button" value="添加电动车" id="add_e_btn">
+    </header>
+    <!-- 头部end -->
+    <!-- 提示start -->
+    <nav class="tips w box_style" id="tip">
+        <h3>使用提示</h3>
+        <pre>兼容性说明：
+        1、本应用目前仅支持 IE9 及以上 PC浏览器 (未做移动端优化) (推荐使用 Chrome、msedge)；
+        2、若页面显示异常，请尝试将 浏览器窗口最大化 或 调整浏览器页面大小 (ctrl+鼠标滚轮)。
+
+       使用说明：
+        1、0.0023 科学记数法填写方法为 2.3e-3；
+        2、当车辆某参数数量小于该项输入框时，多于输入框留空即可；   例如：某车型档位数为5，各前进挡传动比 输入项中仅需将前五个输入框依次输入1——5挡的传动比，后三个输入框留空即可；
+        3、加速时间曲线计算中，并未将换挡和起步阶段的离合器动力衔接时间计入其中；
+        4、最大爬坡度曲线 及 加速过程计算中，并未考虑车轮因附着力不足而导致的车轮打滑的情况（车辆的爬坡度除了受驱动力制约，还受地面与车轮的附着条件制约）；
+        5、为简化输入数据，车辆的滚动阻力系数选用经验公式 fCoe = 0.0041 + 0.0000256 * ua；
+        6、预选车辆中的质量数据均为车辆的整备质量。
+        7、在传统燃油车模块中，发动机的外特性动力曲线分为两种计算模式，在拟合系数模式中，应用根据给出的拟合系数绘制函数图像； 在转速转矩拟合模式中，应用根据用户输入的转速转矩，通过矩阵计算出函数的拟合系数，再绘制函数曲线；
+        
+        
+        </pre>
+
+    </nav>
+    <!-- 提示end -->
+    <div id="vain"></div>
+
+    <div id="content">
+        <!-- 燃油车部分start -->
+        <!-- <section class="fuel_sec w box_style" id="F0">
+            <div class="fuel_left_div">
+                <table class="fuel_left_table">
+                    <caption>传统燃油车</caption>
+                    <tr>
+                        <td>
+
+                        </td>
+                        <td colspan="2">预选车辆</td>
+                        <td><select name="presele" class="presele">
+                            <option value="0">--手动输入--</option>
+                            <option value="4">汽车理论 余志生 p302 1.3</option>
+                            <option value="1">大众 Golf V</option>
+                            <option value="2">沃尔沃 S80 D5</option>
+                            <option value="3">蓝旗亚 Ypsilon 1.3</option>
+                            </select>
+                        </td>
+                        <td></td>
+                        <td>车辆名称</td>
+                        <td><input type="text" name="veh_name" class="veh_name" value="" placeholder=""></td>
+                    </tr>
+                    <tr>
+                        <td><span class="iconfont icon-help">
+                                <div class="tip">
+                                    该数据作为发动机动力性的重要计算数据。输入的拟合系数越多，计算结果越接近真实值。拟合公式：Ttq=a0+a1n+a2n²+a3n³+......
+                                </div>
+                            </span></td>
+
+                        <td>
+                            <label for="coe">拟合系数</label><input type="radio" name="mode" value="0" class="radio" checked id="coe">
+                        </td>
+
+
+                        <td></td>
+                        <td colspan="4">
+                            <input type="number" class="coe_a" value="" step="0.00001">
+                            <input type="number" class="coe_a" value="" step="0.00001">
+                            <input type="number" class="coe_a" value="" step="0.00001">
+                            <input type="number" class="coe_a" value="" step="0.00001">
+                            <input type="number" class="coe_a" value="" step="0.00001">
+                            <input type="number" class="coe_a" value="" step="0.00001">
+                            <input type="number" class="coe_a" value="" step="0.00001">
+                            <input type="number" class="coe_a" value="" step="0.00001">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td rowspan="2"><span class="iconfont icon-help">
+                                <div class="tip">
+                                    该数据作为发动机动力性的重要计算数据。发动机转速和转矩应成组输入，且均为已输入时，程序才会将改组记为有效组并引用计算。输入组数越多，转速区间分配越均匀，计算得到的拟合系数越接近真实值。
+                                </div>
+                            </span></td>
+                        <td rowspan="2">
+                            <label for="fitting">转速转矩拟合</label><input type="radio" name="mode" value="1" class="radio" id="fitting">
+                        </td>
+
+                        <td>转矩(N.m)</td>
+                        <td colspan="4">
+                            <input type="number" class="input_ttq" value="" step="0.00001">
+                            <input type="number" class="input_ttq" value="" step="0.00001">
+                            <input type="number" class="input_ttq" value="" step="0.00001">
+                            <input type="number" class="input_ttq" value="" step="0.00001">
+                            <input type="number" class="input_ttq" value="" step="0.00001">
+                            <input type="number" class="input_ttq" value="" step="0.00001">
+                            <input type="number" class="input_ttq" value="" step="0.00001">
+                            <input type="number" class="input_ttq" value="" step="0.00001">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>转速(n/min)</td>
+                        <td colspan="4">
+                            <input type="number" class="input_n" value="" step="0.00001">
+                            <input type="number" class="input_n" value="" step="0.00001">
+                            <input type="number" class="input_n" value="" step="0.00001">
+                            <input type="number" class="input_n" value="" step="0.00001">
+                            <input type="number" class="input_n" value="" step="0.00001">
+                            <input type="number" class="input_n" value="" step="0.00001">
+                            <input type="number" class="input_n" value="" step="0.00001">
+                            <input type="number" class="input_n" value="" step="0.00001">
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td rowspan="5"><span class="iconfont icon-help">
+                                <div class="tip">
+                                    该数据作为发动机经济性的重要计算数据，发动机转速和燃油消耗率(B0-B4)应成组输入，且均为已输入时，程序才会将改组数据记为有效组并引用计算。拟合公式：b=b0+b1n+b2n²+b3n³+......
+                                </div>
+                            </span></td>
+                        <td rowspan="5">燃油消耗率拟合系数</td>
+
+                        <td>B0</td>
+                        <td colspan="4">
+                            <input type="number" class="input_B0 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B0 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B0 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B0 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B0 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B0 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B0 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B0 input_b" value="" step="0.00001">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>B1</td>
+                        <td colspan="4">
+                            <input type="number" class="input_B1 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B1 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B1 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B1 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B1 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B1 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B1 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B1 input_b" value="" step="0.00001">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>B2</td>
+                        <td colspan="4">
+                            <input type="number" class="input_B2 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B2 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B2 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B2 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B2 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B2 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B2 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B2 input_b" value="" step="0.00001">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>B3</td>
+                        <td colspan="4">
+                            <input type="number" class="input_B3 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B3 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B3 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B3 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B3 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B3 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B3 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B3 input_b" value="" step="0.00001">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>B4</td>
+                        <td colspan="4">
+                            <input type="number" class="input_B4 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B4 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B4 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B4 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B4 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B4 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B4 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B4 input_b" value="" step="0.00001">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td></td>
+                        <td colspan="2">转速范围(n/min)</td>
+                        <td colspan="4"><input type="number" class="engine_speed" value="" step="0.00001">-<input type="number" class="engine_speed" value="" step="0.00001"></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td colspan="2">各前进挡传动比</td>
+                        <td colspan="4">
+                            <input type="number" class="tran_rat" value="" step="0.00001">
+                            <input type="number" class="tran_rat" value="" step="0.00001">
+                            <input type="number" class="tran_rat" value="" step="0.00001">
+                            <input type="number" class="tran_rat" value="" step="0.00001">
+                            <input type="number" class="tran_rat" value="" step="0.00001">
+                            <input type="number" class="tran_rat" value="" step="0.00001">
+                            <input type="number" class="tran_rat" value="" step="0.00001">
+                            <input type="number" class="tran_rat" value="" step="0.00001">
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td colspan="2">主减速比</td>
+                        <td><input type="number" class="main_rat" value="" step="0.00001"></td>
+                        <td></td>
+                        <td>传动效率</td>
+                        <td><input type="number" class="mech_effi" value="" step="0.00001"></td>
+                    </tr>
+                    <tr>
+                        <td><span class="iconfont icon-help">
+                                <div class="tip">风阻系数的大小取决于汽车的外形，风阻系数愈大,则空气阻力愈大现代汽车的风阻系数一般在0.23-0.5之间</div>
+                            </span></td>
+                        <td colspan="2">空气阻力系数</td>
+                        <td><input type="number" class="coe_air" value="" step="0.00001"></td>
+                        <td></td>
+                        <td>车轮半径(m)</td>
+                        <td><input type="number" class="radius" value="" step="0.00001"></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td colspan="2">迎风面积(m²)</td>
+                        <td><input type="number" class="area" value="" step="0.00001"></td>
+                        <td></td>
+                        <td>车辆总质量(kg)</td>
+                        <td><input type="number" class="quality" value="" step="0.00001"></td>
+                    </tr>
+
+
+
+
+                </table>
+                <div class="btn f_btn">
+                    <input type="button" value="输出结果" class="res"><input type="button" value="删除车辆" class="del">
+                </div>
+            </div>
+
+            <div class="fuel_right_div">
+                <select name="sele_plot" class="sele_plot">
+                    <option class="opt_plot" value="8">车辆综合性能雷达图</option>
+                    <option class="opt_plot" value="0">发动机 外特性动力曲线</option>
+                    <option class="opt_plot" value="2">驱动力、行驶阻力曲线</option>
+                    <option class="opt_plot" value="3">功率平衡曲线</option>
+                    <option class="opt_plot" value="4">后备功率曲线</option>
+                    <option class="opt_plot" value="5">加速度曲线</option>
+                    <option class="opt_plot" value="6">加速度倒数曲线</option>
+                    <option class="opt_plot" value="9">加速时间曲线</option>
+                    <option class="opt_plot" value="7">爬坡度曲线</option>
+                    <option class="opt_plot" value="1">发动机 负荷特性曲线</option>
+                    <option class="opt_plot" value="10">百公里燃油消耗量曲线</option>
+                </select>
+
+                <div class="fuel_chart">
+                </div>
+            </div>
+        </section> -->
+        <!-- 燃油车部分end -->
+
+        <!-- 电动车部分start -->
+        <!-- <section class="elec_sec w box_style" id="E0">
+            <div class="elec_left_div">
+                <table class="elec_left_table">
+                    <caption>纯电动车</caption>
+                    <tr>
+                        <td>
+                        </td>
+                        <td colspan="2">预选车辆</td>
+                        <td><select name="presele" class="presele">
+                        <option value="0">--手动输入--</option>
+                        <option value="1">Electric Vehicle</option>
+                        </select>
+                        </td>
+                        <td></td>
+                        <td>车辆名称</td>
+                        <td><input type="text" name="veh_name" class="veh_name" value="" placeholder=""></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td colspan="2">最大转矩(N.m)</td>
+                        <td><input type="number" class="max_ttq" value="" step="0.00001"></td>
+                        <td></td>
+                        <td>最大功率(kw)</td>
+                        <td><input type="number" class="max_pe" value="" step="0.00001"></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td colspan="2">额定转速(n/min)</td>
+                        <td><input type="number" class="engine_speed" value="" step="0.00001"></td>
+                        <td></td>
+                        <td>最高转速(n/min)</td>
+                        <td><input type="number" class="engine_speed" value="" step="0.00001"></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td colspan="2">主减速比</td>
+                        <td><input type="number" class="main_rat" value="" step="0.00001"></td>
+                        <td></td>
+                        <td>传动效率</td>
+                        <td><input type="number" class="mech_effi" value="" step="0.00001"></td>
+                    </tr>
+                    <tr>
+                        <td><span class="iconfont icon-help">
+                            <div class="tip">风阻系数的大小取决于汽车的外形，风阻系数愈大,则空气阻力愈大现代汽车的风阻系数一般在0.23-0.5之间</div>
+                        </span></td>
+                        <td colspan="2">空气阻力系数</td>
+                        <td><input type="number" class="coe_air" value="" step="0.00001"></td>
+                        <td></td>
+                        <td>车轮半径(m)</td>
+                        <td><input type="number" class="radius" value="" step="0.00001"></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td colspan="2">迎风面积(m²)</td>
+                        <td><input type="number" class="area" value="" step="0.00001"></td>
+                        <td></td>
+                        <td>车辆总质量(kg)</td>
+                        <td><input type="number" class="quality" value="" step="0.00001"></td>
+                    </tr>
+                    <tr>
+                        <td><span class="iconfont icon-help">
+                        <div class="tip">当车辆档位数为一时，该项各输入框可留空，程序会默认给出传动比为1的唯一档位</div>
+                    </span></td>
+                        <td colspan="2">各前进挡传动比</td>
+                        <td colspan="4">
+                            <input type="number" class="tran_rat" value="" step="0.00001">
+                            <input type="number" class="tran_rat" value="" step="0.00001">
+                            <input type="number" class="tran_rat" value="" step="0.00001">
+                            <input type="number" class="tran_rat" value="" step="0.00001">
+                            <input type="number" class="tran_rat" value="" step="0.00001">
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>转速(n/min)</td>
+                        <td colspan="4">
+                            <input type="number" class="input_n" value="" step="0.00001">
+                            <input type="number" class="input_n" value="" step="0.00001">
+                            <input type="number" class="input_n" value="" step="0.00001">
+                            <input type="number" class="input_n" value="" step="0.00001">
+                            <input type="number" class="input_n" value="" step="0.00001">
+                            <input type="number" class="input_n" value="" step="0.00001">
+                            <input type="number" class="input_n" value="" step="0.00001">
+                            <input type="number" class="input_n" value="" step="0.00001">
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td rowspan="5"><span class="iconfont icon-help">
+                            <div class="tip">
+                                该数据作为电机经济性的重要计算数据，电机转速和电机效率(C0-C4)应成组输入，且均为已输入时，程序才会将改组数据记为有效组并引用计算。输入组数越多，转速区间分配越均匀，计算结果越接近真实值。拟合公式：c=c0+c1n+c2n²+c3n³+......
+                            </div>
+                        </span></td>
+                        <td rowspan="5">电机效率拟合系数</td>
+
+                        <td>C0</td>
+                        <td colspan="4">
+                            <input type="number" class="input_B0 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B0 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B0 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B0 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B0 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B0 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B0 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B0 input_b" value="" step="0.00001">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>C1</td>
+                        <td colspan="4">
+                            <input type="number" class="input_B1 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B1 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B1 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B1 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B1 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B1 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B1 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B1 input_b" value="" step="0.00001">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>C2</td>
+                        <td colspan="4">
+                            <input type="number" class="input_B2 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B2 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B2 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B2 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B2 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B2 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B2 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B2 input_b" value="" step="0.00001">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>C3</td>
+                        <td colspan="4">
+                            <input type="number" class="input_B3 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B3 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B3 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B3 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B3 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B3 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B3 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B3 input_b" value="" step="0.00001">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>C4</td>
+                        <td colspan="4">
+                            <input type="number" class="input_B4 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B4 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B4 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B4 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B4 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B4 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B4 input_b" value="" step="0.00001">
+                            <input type="number" class="input_B4 input_b" value="" step="0.00001">
+                        </td>
+                    </tr>
+
+
+
+
+                </table>
+                <div class="btn">
+                    <input type="button" value="输出结果" class="res"><input type="button" value="删除车辆" class="del">
+                </div>
+            </div>
+
+            <div class="elec_right_div">
+                <select name="sele_plot" class="sele_plot">
+                <option class="opt_plot" value="8">车辆综合性能雷达图</option>
+                <option class="opt_plot" value="0">电机 外特性动力曲线</option>
+                <option class="opt_plot" value="2">驱动力、行驶阻力曲线</option>
+                <option class="opt_plot" value="3">功率平衡曲线</option>
+                <option class="opt_plot" value="4">后备功率曲线</option>
+                <option class="opt_plot" value="5">加速度曲线</option>
+                <option class="opt_plot" value="6">加速度倒数曲线</option>
+                <option class="opt_plot" value="9">加速时间曲线</option>
+                <option class="opt_plot" value="7">爬坡度曲线</option>
+                <option class="opt_plot" value="1">电机 效率曲线</option>
+                <option class="opt_plot" value="10">能量消耗率曲线</option>
+
+            </select>
+
+                <div class="elec_chart">
+                </div>
+            </div>
+        </section> -->
+        <!-- 电动车部分end -->
+    </div>
+
+</body>
+
+</html>
