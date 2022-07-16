@@ -16,7 +16,7 @@ body {
     -webkit-font-smoothing: antialiased;
     background-color: rgb(230, 230, 230);
     font: 12px/1.5 Microsoft YaHei, Heiti SC, tahoma, arial, Hiragino Sans GB, "\5B8B\4F53", sans-serif;
-    color: rgb(59, 59, 59)
+    color: rgb(95, 95, 95)
 }
 
 .w {
@@ -24,13 +24,24 @@ body {
     margin: 0 auto;
 }
 
+.typeTitle {
+    width: 100%;
+    text-align: center;
+    color: rgb(109, 109, 109);
+    font-size: 20px;
+    line-height: 60px;
+}
+
 h1 {
     position: fixed;
     top: -1px;
-    left: 34px; 
+    left: 34px;
     line-height: 50px;
     font-family: serif;
-    font-weight: 1000;
+    font-weight: 1200;
+    background: linear-gradient(to right, rgb(40, 170, 236), rgb(52, 208, 155));
+    -webkit-background-clip: text;
+    color: transparent;
 }
 
 .box_style {
@@ -53,10 +64,11 @@ header {
 nav.tips {
     z-index: 1;
     position: fixed;
+    color:rgb(117, 117, 117);
     top: -114px;
     right: 2.5%;
     height: 5%;
-    width: 10%;
+    width: 5%;
     background-color: rgb(255, 240, 210, 0);
     margin-top: 126px;
     transition: all 0.5s;
@@ -66,12 +78,13 @@ nav.tips {
 
 nav.tips:hover {
     height: 330px;
+    color: rgb(255, 245, 219, 0.9);
     width: 95%;
     background-color: rgb(255, 245, 219, 0.9);
 }
 
 nav.tips h3 {
-    margin: 10px;
+    margin: 3px;
     text-align: center;
 }
 
@@ -81,7 +94,6 @@ nav.tips p {
     text-align: justify;
     margin: 0 20px;
     padding: 0 20px;
-    /* overflow: hidden; */
 }
 
 nav.tips pre {
@@ -91,7 +103,6 @@ nav.tips pre {
     color: rgb(112, 112, 112);
     margin: 0 20px;
     padding: 0 20px;
-    /* overflow: hidden; */
 }
 
 .optgroup {
@@ -122,43 +133,37 @@ section.elec_sec {
     border-radius: 10px;
     box-shadow: 5px 5px 30px 4px rgba(161, 161, 161);
 }
-
 section.fuel_sec div.fuel_left_div {
     float: left;
     width: 48%;
-    margin: 1%;
-    padding: 20px 0;
+    margin: 0 1%;
+    padding: 0;
     height: 510px;
-    /* background-color: rgb(104, 220, 255); */
 }
+
 
 section.fuel_sec div.fuel_right_div {
     float: right;
     width: 48%;
-    margin: 1%;
-    /* margin-left: 1%; */
-    padding: 20px 0;
+    margin: 0 1%;
+    padding: 0;
     height: 510px;
-    /* background-color: rgb(222, 255, 104); */
 }
 
 section.elec_sec div.elec_left_div {
     float: left;
     width: 48%;
-    margin: 1%;
-    padding: 20px 0;
+    margin: 0 1%;
+    padding: 0;
     height: 510px;
-    /* background-color: rgb(104, 220, 255); */
 }
 
 section.elec_sec div.elec_right_div {
     float: right;
     width: 48%;
-    margin: 1%;
-    /* margin-left: 1%; */
-    padding: 20px 0;
+    margin: 0 1%;
+    padding: 0;
     height: 510px;
-    /* background-color: rgb(222, 255, 104); */
 }
 
 section div.btn {
@@ -167,29 +172,22 @@ section div.btn {
     clear: both;
     text-align: center;
     display: block;
-    /* background-color: rgb(117, 57, 0); */
 }
 
 
-/* section div.f_btn {
-    margin-top: 0px;
-} */
 
 caption {
-    /* background-color: cornflowerblue; */
     font-size: 18px;
     line-height: 30px;
 }
 
 td {
-    /* background-color: cornflowerblue; */
     font-size: 14px;
 }
 
 table,
 th,
 td {
-    /* border: 1px solid black; */
     font-size: 12px;
 }
 
@@ -225,18 +223,10 @@ table {
 .fuel_left_table tr:nth-child(16) input {
     width: 79%;
 }
+
 .fuel_left_table tr:nth-child(11) input {
     width: 38%;
 }
-/* .coe_a:focus,
-.input_ttq:focus,
-table td .input_n:focus,
-table td .input_b:focus,
-table td .tran_rat:focus {
-    position: relative;
-    width: 16%;
-} */
-
 
 .elec_left_table tr:nth-child(3) input,
 .elec_left_table tr:nth-child(4) input {
@@ -293,14 +283,12 @@ table td .tran_rat:focus {
     margin-top: 10px;
     width: 100%;
     height: 455px;
-    /* background-color: aquamarine; */
 }
 
 .elec_chart {
     margin-top: 10px;
     width: 100%;
     height: 455px;
-    /* background-color: aquamarine; */
 }
 
 .presele,
@@ -331,7 +319,6 @@ input[type]:hover {
 }
 
 
-/* ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¥ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â»ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â©ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¾ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¤input[tupe="number"]ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¤ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¸ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¾ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â®ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¥ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¤ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â´ */
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -341,7 +328,6 @@ input::-webkit-inner-spin-button {
 input[type="text"] {
     border: none;
     outline: none;
-    /* text-align: center; */
     padding-left: 5px;
     height: 25px;
     width: 132px;
@@ -367,7 +353,6 @@ input[type="number"] {
     margin-top: 3px;
     width: 11%;
     height: 25px;
-    /* -moz-appearance: textfield; */
     border-radius: 8px;
     transition: all .5s;
 }
@@ -383,7 +368,7 @@ table td .tran_rat:focus {
 }
 
 table td .input_engspe:focus,
-table td .input_qid:focus{
+table td .input_qid:focus {
     position: relative;
     width: 55%;
 }
@@ -394,15 +379,15 @@ table .input_b {
 }
 
 #add_f_btn {
-    color: rgb(97, 97, 97);
+    color: rgb(255, 255, 255);
     margin-top: 12px;
-    background-color: rgb(209, 240, 255);
+    background-color: rgb(157, 212, 239);
 }
 
 #add_e_btn {
-    color: rgb(97, 97, 97);
+    color: rgb(255, 255, 255);
     margin-top: 12px;
-    background-color: rgb(226, 255, 229);
+    background-color: rgb(166, 232, 173);
 }
 
 .res {
@@ -444,7 +429,6 @@ div .del:active {
 }
 
 .tip {
-    /* display: none; */
     z-index: 1;
     position: absolute;
     background-color: rgba(129, 106, 47, 0);
@@ -478,11 +462,8 @@ div .del:active {
     float: right;
     -webkit-appearance: none;
     background-color: rgb(248, 248, 248);
-    /* border: 1px solid #aaa; */
     padding: 9px;
-    /* top: 3px; */
     border-radius: 50px;
-    /* display: inline-block; */
     position: relative;
 }
 
@@ -490,8 +471,6 @@ div .del:active {
     width: 12px;
     height: 12px;
     border-radius: 50px;
-    /* top: 3px; */
     background: rgb(159, 228, 159);
     box-shadow: 0px 0px 5px 0px rgb(159, 228, 159);
 }
-

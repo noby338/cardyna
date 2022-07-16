@@ -1,69 +1,38 @@
 @font-face {
-    font-family: "iconfont";
-    /* Project id  */
-    src: url('iconfont.ttf?t=1637402411429') format('truetype');
+  font-family: "iconfont";
+  /* Project id  */
+  src: url('iconfont.ttf?t=1657962129084') format('truetype');
 }
 
 .iconfont {
-    font-family: "iconfont" !important;
-    font-size: 16px;
-    font-style: normal;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  font-family: "iconfont" !important;
+  font-size: 22px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
+
+
 .icon-add:before {
-    content: "\e664";
+  content: "\e664";
 }
 
 .icon-ashbin:before {
-    content: "\e665";
+  content: "\e665";
 }
 
-.icon-browse:before {
-    content: "\e666";
-}
-
-.icon-bottom:before {
-    content: "\e667";
-}
-
-.icon-hide:before {
-    content: "\e673";
+.icon-comment:before {
+  content: "\e668";
 }
 
 .icon-help:before {
-    float: right;
-    margin-left: 5px;
-    color: rgb(116, 116, 116);
-    font-size: 22px;
-    content: "\e677";
+  float: right;
+  margin-left: 5px;
+  color: rgb(116, 116, 116);
+  content: "\e677";
 }
 
 .icon-select:before {
-    content: "\e67e";
-}
-
-.icon-success:before {
-    content: "\e67f";
-}
-
-.icon-warning:before {
-    content: "\e682";
-}
-
-.icon-close-bold:before {
-    content: "\e685";
-}
-
-.icon-arrow-down-bold:before {
-    content: "\e686";
-}
-
-.icon-help-filling:before {
-    content: "\e68a";
-}
-
-.icon-top-filling:before {
-    content: "\e68b";
+  content: "\e67e";
 }

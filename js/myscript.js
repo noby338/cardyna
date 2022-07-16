@@ -2,12 +2,14 @@ window.addEventListener('DOMContentLoaded', function () { //等待dom加载完�
 
     let addF = document.querySelector('#add_f_btn'),
         addE = document.querySelector('#add_e_btn'),
+        cardyna = document.querySelector('#cardyna'),
         content = document.querySelector('#content'),
         i = 1, //定义燃油车类的编号
         j = 1; //定义电动车类的编号
 
     addF.addEventListener('click', addNewFHtml); //添加点击事件
     addE.addEventListener('click', addNewEHtml);
+    cardyna.addEventListener('click', ()=>location.reload());
 
     //燃油车类
     class FVeh {
@@ -3507,7 +3509,7 @@ window.addEventListener('DOMContentLoaded', function () { //等待dom加载完�
             return Math.round(ua * 100) / 100;;
         }
 
-        nedcFun(t) {//nedc循环工况函数
+        nedcFun(t) { //nedc循环工况函数
             let point = [];
             point.push([0, 0]);
             point.push([11, 0]);
@@ -3597,7 +3599,7 @@ window.addEventListener('DOMContentLoaded', function () { //等待dom加载完�
             for (i = 0; i < point.length; i++) {
                 if (point[i][0] < t && t <= point[i + 1][0]) {
                     fun = (t - point[i][0]) * (point[i + 1][1] - point[i][1]) / (point[i + 1][0] - point[i][0]) + point[i][1];
-                }//y = (y2-y1)/(x2-x1)*(x-x1)+y1（两点式）
+                } //y = (y2-y1)/(x2-x1)*(x-x1)+y1（两点式）
             }
             return Math.round(fun * 100) / 100;
 
@@ -3606,7 +3608,7 @@ window.addEventListener('DOMContentLoaded', function () { //等待dom加载完�
         nedcData() {
             let data = [];
             for (let t = 0; t <= 1180; t += 0.1) {
-                t = Math.round(t * 10) / 10; 
+                t = Math.round(t * 10) / 10;
                 data.push([t, this.nedcFun(t)]);
             }
             return data;
@@ -7253,9 +7255,9 @@ window.addEventListener('DOMContentLoaded', function () { //等待dom加载完�
     function addNewFHtml() {
         document.documentElement.scrollTop = 0;
         let newHtml = `<section class="fuel_sec w box_style" id="F${i}"">
+        <div class="typeTitle">燃油车</div>
 <div class="fuel_left_div">
             <table class="fuel_left_table">
-                <caption>传统燃油车</caption>
                 <tr>
                     <td>
 
@@ -7472,7 +7474,7 @@ window.addEventListener('DOMContentLoaded', function () { //等待dom加载完�
                 </tr>
             </table>
             <div class="btn f_btn">
-                <input type="button" value="输出结果" class="res"><input type="button" value="删除车辆" class="del">
+                <input type="button" value="&#xe67e;" class="res iconfont"><input type="button" value="&#xe665;" class="del iconfont">
             </div>
         </div>
 
@@ -7507,9 +7509,9 @@ window.addEventListener('DOMContentLoaded', function () { //等待dom加载完�
     function addNewEHtml() {
         document.documentElement.scrollTop = 0;
         let newHtml = `<section class="elec_sec w box_style" id="E${j}">
+        <div class="typeTitle">电动车</div>
 <div class="elec_left_div">
             <table class="elec_left_table">
-                <caption>纯电动车</caption>
                 <tr>
                     <td>
                     </td>
@@ -7685,14 +7687,9 @@ window.addEventListener('DOMContentLoaded', function () { //等待dom加载完�
                     <td>车辆总质量(kg)</td>
                     <td><input type="number" class="quality" value="" step="0.00001"></td>
                 </tr>
-                
-                
-
-
-
             </table>
             <div class="btn">
-                <input type="button" value="输出结果" class="res"><input type="button" value="删除车辆" class="del">
+            <input type="button" value="&#xe67e;" class="res iconfont"><input type="button" value="&#xe665;" class="del iconfont">
             </div>
         </div>
 
@@ -7720,8 +7717,6 @@ window.addEventListener('DOMContentLoaded', function () { //等待dom加载完�
 
         content.insertAdjacentHTML('afterBegin', newHtml);
         new EVeh(`#E${j++}`);
-
     }
-
     document.getElementById("add_f_btn").click(); //触发点击事件，初始化两个类
 });
