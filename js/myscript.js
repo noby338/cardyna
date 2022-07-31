@@ -3387,10 +3387,6 @@ window.addEventListener('DOMContentLoaded', function () { //等待dom加载完�
 
 
 
-        // testFun() {//用于开发测试
-        //     console.log(this.iPlot.series[1].demo);
-        // }
-
         //函数计算部分start
 
         nSquare() { //转速矩阵数据
