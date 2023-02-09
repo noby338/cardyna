@@ -13,7 +13,7 @@
 
 ## 如何使用
 
-* 访问网址：[CarDyna (tcloudbase.com)](https://cardyna-3g1nkth8ac241525-1308523627.ap-shanghai.app.tcloudbase.com/)
+* 访问网址：[CarDyna]()
 * 下载解压后运行 index.html
 
 ## 版本
