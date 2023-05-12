@@ -13,7 +13,7 @@
 
 ## 如何使用
 
-* 访问网址：[CarDyna](https://noby3388.gitee.io/cardy)
+* 访问网址：[CarDyna](https://cardyna.noby.site)
 * 下载解压后运行 index.html
 
 ## 版本
